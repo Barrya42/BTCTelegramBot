@@ -31,6 +31,8 @@ public class BTCTelegramBotConfig
             defaultBotOptions.setProxyHost(proxyHost);
             defaultBotOptions.setProxyPort(proxyPort);
             defaultBotOptions.setProxyType(DefaultBotOptions.ProxyType.HTTP);
+//            defaultBotOptions.setBaseUrl("http://api.telegram.org/bot");
+            defaultBotOptions.getBaseUrl();
         }
         return defaultBotOptions;
     }

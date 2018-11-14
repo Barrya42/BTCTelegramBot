@@ -13,8 +13,7 @@ public class BTCTelegramBot
 {
     public static void main(String[] args)
     {
-        System.getProperty("https.protocols");
-        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2,SSLv3");
+        //System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2,SSLv3");
         SpringApplication.run(new Class<?>[]{BTCTelegramBot.class}, args);
         ApiContextInitializer.init();
         //ApplicationContext ctx = new AnnotationConfigApplicationContext(BTCTelegramBotConfig.class);
