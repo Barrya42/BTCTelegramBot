@@ -10,6 +10,9 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.meta.generics.BotSession;
 
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+
 @Configuration
 @PropertySource("app.properties")
 public class BTCTelegramBotConfig
@@ -28,11 +31,22 @@ public class BTCTelegramBotConfig
         {
             String proxyHost = properties.getProperty("bot.proxy.host");
             int proxyPort = properties.getProperty("bot.proxy.port", Integer.class);
+            String proxyLogin = properties.getProperty("bot.proxy.login");
+            String proxyPass = properties.getProperty("bot.proxy.pass");
+            //tg://socks?server=sr.spry.fail&port=1080&user=telegram&pass=telegram
             defaultBotOptions.setProxyHost(proxyHost);
             defaultBotOptions.setProxyPort(proxyPort);
-            defaultBotOptions.setProxyType(DefaultBotOptions.ProxyType.HTTP);
+            defaultBotOptions.setProxyType(DefaultBotOptions.ProxyType.SOCKS5);
+
+            Authenticator.setDefault(new Authenticator()
+            {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication()
+                {
+                    return new PasswordAuthentication(proxyLogin, proxyPass.toCharArray());
+                }
+            });
 //            defaultBotOptions.setBaseUrl("http://api.telegram.org/bot");
-            defaultBotOptions.getBaseUrl();
         }
         return defaultBotOptions;
     }
