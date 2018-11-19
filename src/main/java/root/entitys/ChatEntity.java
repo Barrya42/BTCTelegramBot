@@ -9,18 +9,19 @@ import javax.persistence.Table;
 @Table(name = "Chats")
 public class ChatEntity
 {
-    public static int CHAT_STAGE_START = 0;
-    public static int CHAT_STAGE_CURRENCY_TO_GIVE_SELECTED = 1;
-    public static int CHAT_STAGE_COUNT_TO_GIVE_ENTERED = 2;
-    public static int CHAT_STAGE_CURRENCY_TO_RECIVE_SELECTED = 3;
-    public static int CHAT_STAGE_ACCOUNT_NUMBER_ENTERED = 4;
-    public static int CHAT_STAGE_PHONE_ENTERED = 5;
+    public static final int CHAT_STAGE_NONE = -1;
+    public static final int CHAT_STAGE_START = 0;
+    public static final int CHAT_STAGE_CURRENCY_TO_GIVE_SELECTED = 1;
+    public static final int CHAT_STAGE_COUNT_TO_GIVE_ENTERED = 2;
+    public static final int CHAT_STAGE_CURRENCY_TO_RECIVE_SELECTED = 3;
+    public static final int CHAT_STAGE_ACCOUNT_NUMBER_ENTERED = 4;
+    public static final int CHAT_STAGE_PHONE_ENTERED = 5;
 
     @Id
     private long id;
     @ManyToOne
     private UserEntity userEntity;
-    private int chatStage = -1;
+    private int chatStage = CHAT_STAGE_NONE;
 
     public long getId()
     {
@@ -40,6 +41,16 @@ public class ChatEntity
     public void setChatStage(int chatStage)
     {
         this.chatStage = chatStage;
+    }
+
+    public void setId(long id)
+    {
+        this.id = id;
+    }
+
+    public void setUserEntity(UserEntity userEntity)
+    {
+        this.userEntity = userEntity;
     }
 
     public ChatEntity()

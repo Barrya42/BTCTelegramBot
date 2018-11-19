@@ -6,8 +6,11 @@ import root.entitys.UserEntity;
 
 public interface UserService
 {
-    Optional<UserEntity> findUserById(long id);
-    UserEntity addUser(UserEntity userEntity);
-    UserEntity blockUser(UserEntity userEntity);
-    UserEntity unBlockUser(UserEntity userEntity);
+    public Optional<UserEntity> findUserById(long id);
+
+    public UserEntity addUser(UserEntity userEntity);
+
+    public UserEntity blockUser(UserEntity userEntity);
+
+    public UserEntity unBlockUser(UserEntity userEntity);
 }

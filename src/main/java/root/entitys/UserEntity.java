@@ -36,6 +36,26 @@ public class UserEntity
         return blocked;
     }
 
+    public void setId(long id)
+    {
+        this.id = id;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public void setBlocked(boolean blocked)
+    {
+        this.blocked = blocked;
+    }
+
+    public void setUserRole(RoleEntity userRole)
+    {
+        this.userRole = userRole;
+    }
+
     public UserEntity()
     {
 
