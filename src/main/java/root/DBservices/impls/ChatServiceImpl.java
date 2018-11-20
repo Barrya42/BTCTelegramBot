@@ -1,6 +1,7 @@
 package root.DBservices.impls;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import root.DBservices.ChatService;
 import root.entitys.ChatEntity;
 import root.repos.ChatRepository;
 
+@Service
 public class ChatServiceImpl implements ChatService
 {
     @Autowired

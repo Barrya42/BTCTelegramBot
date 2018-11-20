@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService
     @Override
     public UserEntity addUser(UserEntity userEntity)
     {
-        return null;
+        return userRepository.save(userEntity);
     }
 
     @Override

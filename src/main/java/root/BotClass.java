@@ -1,22 +1,22 @@
 package root;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
-import java.util.Optional;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import root.DBservices.UserService;
-import root.entitys.UserEntity;
 
-@Controller
+@Service
 public class BotClass extends TelegramLongPollingBot
 {
     @Autowired
     UserService userService;
     @Autowired
+    private
     MessageHandler messageHandler;
     private String username = "CryptoExch42Bot";
     private String name = "BTCBot";
@@ -31,22 +31,14 @@ public class BotClass extends TelegramLongPollingBot
     @Override
     public void onUpdateReceived(Update update)
     {
-        long userId = update.getMessage()
-                .getFrom()
-                .getId();
-        String text = update.getMessage()
-                .getText();
-        Optional<UserEntity> userEntity = userService.findUserById(userId);
-        if (userEntity.isPresent())
+        try
         {
-
+            SendMessage sendMessage = messageHandler.handleResponse(update.getMessage());
+            execute(sendMessage);
         }
-        else
+        catch (TelegramApiException throwable)
         {
-            if (text.equals("/start"))
-            {
-//            userService
-            }
+            throwable.printStackTrace();
         }
     }
 

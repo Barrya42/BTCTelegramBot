@@ -1,11 +1,13 @@
 package root.DBservices.impls;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import root.DBservices.RoleService;
 import root.entitys.RoleEntity;
 import root.repos.RolesRepository;
 
+@Service
 public class RoleServiceImpl implements RoleService
 {
     @Autowired

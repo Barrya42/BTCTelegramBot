@@ -1,5 +1,7 @@
 package root.entitys;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -12,6 +14,7 @@ public class UserEntity
     @Id
     private long id;
     private String name;
+    @ColumnDefault(value = "false")
     private boolean blocked = false;
     @ManyToOne
     private RoleEntity userRole;
