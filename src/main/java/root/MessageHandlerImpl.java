@@ -188,7 +188,10 @@ public class MessageHandlerImpl implements MessageHandler
             }
             case ChatEntity.CHAT_STAGE_PHONE_ENTERED:
             {
-                sendMessage.setText("phone entered");
+                if(incomingText.toLowerCase().equals("подтвердить"))
+                {
+                    // TODO: 23.11.2018 заверщить чат
+                }
                 break;
             }
             default:
@@ -320,7 +323,10 @@ public class MessageHandlerImpl implements MessageHandler
             }
             case ChatEntity.CHAT_STAGE_PHONE_ENTERED:
             {
-                sendMessage.setText("Ожидайте нашего звонка.");
+                sendMessage.setText("Ожидайте нашего звонка. Или подтвердите получение выплаты.");
+                KeyboardRow buttonRow = new KeyboardRow();
+                keyboardRows.add(buttonRow);
+                buttonRow.add("Подтвердить.");
                 break;
             }
             default:
