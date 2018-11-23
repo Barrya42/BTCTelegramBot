@@ -11,4 +11,6 @@ public interface CurrencyService
     public void removeCurrency(CurrencyEntity currencyEntity);
 
     public List<CurrencyEntity> findAllEnabled();
+
+    public List<CurrencyEntity> findAllEnabledToGive();
 }

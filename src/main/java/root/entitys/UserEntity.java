@@ -19,24 +19,14 @@ public class UserEntity
     @ManyToOne
     private RoleEntity userRole;
 
+    public UserEntity()
+    {
+
+    }
+
     public long getId()
     {
         return id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public RoleEntity getUserRole()
-    {
-        return userRole;
-    }
-
-    public boolean isBlocked()
-    {
-        return blocked;
     }
 
     public void setId(long id)
@@ -44,14 +34,19 @@ public class UserEntity
         this.id = id;
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
     public void setName(String name)
     {
         this.name = name;
     }
 
-    public void setBlocked(boolean blocked)
+    public RoleEntity getUserRole()
     {
-        this.blocked = blocked;
+        return userRole;
     }
 
     public void setUserRole(RoleEntity userRole)
@@ -59,8 +54,13 @@ public class UserEntity
         this.userRole = userRole;
     }
 
-    public UserEntity()
+    public boolean isBlocked()
     {
+        return blocked;
+    }
 
+    public void setBlocked(boolean blocked)
+    {
+        this.blocked = blocked;
     }
 }

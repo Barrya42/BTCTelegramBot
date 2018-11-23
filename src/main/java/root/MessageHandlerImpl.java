@@ -49,7 +49,8 @@ public class MessageHandlerImpl implements MessageHandler
         {
             currentUser = findUserEntity(message.getFrom());
             currentChat = findUserChat(message.getChat());
-            prepareButtons(responseMessage, message.getText());
+            processTextResponse(responseMessage, message.getText());
+            prepareButtons(responseMessage);
         }
         catch (RuntimeException e)
         {
@@ -89,7 +90,116 @@ public class MessageHandlerImpl implements MessageHandler
 
     }
 
-    private void prepareButtons(SendMessage sendMessage, String incomingText)
+    private void processTextResponse(SendMessage sendMessage, String incomingText)
+    {
+        switch (currentChat.getChatStage())
+        {
+            case ChatEntity.CHAT_STAGE_NONE: // В начальном состоянии мбот ждет слова старт
+            {
+                if (incomingText.toLowerCase()
+                        .equals("/start") || incomingText.toLowerCase()
+                        .equals("старт"))
+                {
+                    currentChat.setChatStage(ChatEntity.CHAT_STAGE_START);
+                }
+                break;
+            }
+            case ChatEntity.CHAT_STAGE_START: //ждем ввода валюты которую пользователь хочет поменять
+            {
+                List<CurrencyEntity> enabledCurrencies = currencyService.findAllEnabled();
+                if (!incomingText.isEmpty())
+                {
+                    Optional<CurrencyEntity> selectedCurrency = enabledCurrencies.stream()
+                            .filter(currencyEntity -> currencyEntity.getName()
+                                    .equals(incomingText))
+                            .findFirst();
+                    if (!selectedCurrency.isPresent())
+                    {
+                        sendMessage.setText("Не верное имя валюты.");
+                        break;
+                    }
+                    else
+                    {
+                        //Чувак ввел верную валюту
+                        currentChat.setChatCurrencyToGive(selectedCurrency.get());
+                        currentChat.setChatStage(ChatEntity.CHAT_STAGE_CURRENCY_TO_GIVE_SELECTED);
+                    }
+                }
+                break;
+            }
+            case ChatEntity.CHAT_STAGE_CURRENCY_TO_GIVE_SELECTED: // ждем ввода количества валюты для обмена
+            {
+                try
+                {
+                    double currencyToGiveCount = Double.parseDouble(incomingText);
+                    currentChat.setCurrencyCount(currencyToGiveCount);
+                    currentChat.setChatStage(ChatEntity.CHAT_STAGE_COUNT_TO_GIVE_ENTERED);
+                }
+                catch (NumberFormatException e)
+                {
+                    sendMessage.setText("Не верное количество.");
+                }
+                break;
+            }
+            case ChatEntity.CHAT_STAGE_COUNT_TO_GIVE_ENTERED: //Ждем ввода ввалбты которую пользователь хочет получить
+            {
+                List<CurrencyEntity> allEnabledToGive = currencyService.findAllEnabledToGive();
+                if (!incomingText.isEmpty())
+                {
+                    Optional<CurrencyEntity> selectedCurrency = allEnabledToGive.stream()
+                            .filter(currencyEntity -> currencyEntity.getName()
+                                    .equals(incomingText))
+                            .findFirst();
+                    if (!selectedCurrency.isPresent())
+                    {
+                        sendMessage.setText("Не верное имя валюты.");
+                        break;
+                    }
+                    else
+                    {
+                        //Чувак ввел верную валюту
+                        currentChat.setChatCurrencyToReceive(selectedCurrency.get());
+                        currentChat.setChatStage(ChatEntity.CHAT_STAGE_CURRENCY_TO_RECIVE_SELECTED);
+                    }
+                }
+                break;
+            }
+            case ChatEntity.CHAT_STAGE_CURRENCY_TO_RECIVE_SELECTED:
+            {
+                if (incomingText.toLowerCase()
+                        .matches("\\d{5}")) // допустим номер кошелька состоит из 5 цифр
+                {
+                    currentChat.setChatStage(ChatEntity.CHAT_STAGE_ACCOUNT_NUMBER_ENTERED);
+                    currentChat.setClientMoneyAccount(incomingText);
+                }
+                else if (incomingText.toLowerCase()
+                        .equals("отмена"))
+                {
+                    currentChat.setChatStage(ChatEntity.CHAT_STAGE_NONE);
+                }
+                break;
+            }
+            case ChatEntity.CHAT_STAGE_ACCOUNT_NUMBER_ENTERED:
+            {
+                currentChat.setContactPhone(incomingText.replaceAll("\\D",""));
+                sendMessage.setText("Спасибо. Мы вам перезвоним.");
+                currentChat.setChatStage(ChatEntity.CHAT_STAGE_PHONE_ENTERED);
+                break;
+            }
+            case ChatEntity.CHAT_STAGE_PHONE_ENTERED:
+            {
+                sendMessage.setText("phone entered");
+                break;
+            }
+            default:
+            {
+                sendMessage.setText("Что бы начать нажмите Старт");
+                break;
+            }
+        }
+    }
+
+    private void prepareButtons(SendMessage sendMessage)
     {
         sendMessage.setChatId(currentChat.getId());
 
@@ -104,39 +214,41 @@ public class MessageHandlerImpl implements MessageHandler
         replyKeyboardMarkup.setKeyboard(keyboardRows);
         switch (currentChat.getChatStage())
         {
-            case ChatEntity.CHAT_STAGE_NONE:
+            case ChatEntity.CHAT_STAGE_NONE: // выводим пользователю кнопку старт для запуска диалога
             {
-                if (incomingText.toLowerCase()
-                        .equals("/start") || incomingText.toLowerCase()
-                        .equals("старт"))
-                {
-                    currentChat.setChatStage(ChatEntity.CHAT_STAGE_START);
-                    prepareButtons(sendMessage, incomingText);
-                }
-                else
-                {
-                    KeyboardButton keyboardButton = new KeyboardButton();
 
-                    keyboardButton.setText("Старт");
-                    KeyboardRow firstRow = new KeyboardRow();
-                    keyboardRows.add(firstRow);
-                    firstRow.add(keyboardButton);
+                KeyboardButton keyboardButton = new KeyboardButton();
 
-                    sendMessage.setText("Чтобы начать нажмите Старт");
-                }
+                keyboardButton.setText("Старт");
+                KeyboardRow firstRow = new KeyboardRow();
+                keyboardRows.add(firstRow);
+                firstRow.add(keyboardButton);
+
+                sendMessage.setText("Чтобы начать нажмите Старт");
+
                 break;
             }
-            case ChatEntity.CHAT_STAGE_START:
+            case ChatEntity.CHAT_STAGE_START: // предлагаем кнопки для выбора валюты, которую мы принимаем
             {
-                int rowSize = 3;
                 List<CurrencyEntity> enabledCurrencies = currencyService.findAllEnabled();
+                int rowSize = 3;
                 if (enabledCurrencies.size() > 0)
                 {
+                    KeyboardRow buttonRow = null;
                     sendMessage.setText("Выберите валюту для обмена");
                     for (int i = 0; i < enabledCurrencies.size(); i++)
                     {
-// TODO: 21.11.18 Доделать кнопки в ряд
 
+                        if (i % rowSize == 0)
+                        {
+                            buttonRow = new KeyboardRow();
+                            keyboardRows.add(buttonRow);
+                        }
+
+                        KeyboardButton keyboardButton = new KeyboardButton();
+                        keyboardButton.setText(enabledCurrencies.get(i)
+                                .getName());
+                        buttonRow.add(keyboardButton);
                     }
                 }
                 else
@@ -146,24 +258,64 @@ public class MessageHandlerImpl implements MessageHandler
 
                 break;
             }
-            case ChatEntity.CHAT_STAGE_CURRENCY_TO_GIVE_SELECTED:
+            case ChatEntity.CHAT_STAGE_CURRENCY_TO_GIVE_SELECTED:   //запрашиваем количество валюты
             {
-                sendMessage.setText("currency selected");
+                sendMessage.setText("Введите количество для обмена");
                 break;
             }
-            case ChatEntity.CHAT_STAGE_COUNT_TO_GIVE_ENTERED:
+            case ChatEntity.CHAT_STAGE_COUNT_TO_GIVE_ENTERED: //Запрашиваем валюту которую пользователь хочет получить
             {
-                sendMessage.setText("Count entered");
+                List<CurrencyEntity> enabledToGiveCurrencies = currencyService.findAllEnabledToGive();
+                int rowSize = 3;
+                if (enabledToGiveCurrencies.size() > 0)
+                {
+                    KeyboardRow buttonRow = null;
+                    sendMessage.setText("Выберите валюту на которую хотите поменять");
+                    for (int i = 0; i < enabledToGiveCurrencies.size(); i++)
+                    {
+
+                        if (i % rowSize == 0)
+                        {
+                            buttonRow = new KeyboardRow();
+                            keyboardRows.add(buttonRow);
+                        }
+
+                        KeyboardButton keyboardButton = new KeyboardButton();
+                        keyboardButton.setText(enabledToGiveCurrencies.get(i)
+                                .getName());
+                        buttonRow.add(keyboardButton);
+
+                    }
+                }
+                else
+                {
+                    sendMessage.setText("Нет активных валют.");
+                }
                 break;
             }
             case ChatEntity.CHAT_STAGE_CURRENCY_TO_RECIVE_SELECTED:
             {
-                sendMessage.setText("currency to receive selected");
+                String stringBuilder = "За ваши " +
+                        currentChat.getCurrencyCount() +
+                        " " +
+                        currentChat.getChatCurrencyToGive()
+                                .getName() +
+                        " " +
+                        " вы получите " +
+                        calculateCurrencyCountForUser() +
+                        currentChat.getChatCurrencyToReceive()
+                                .getName() +
+                        " Если вы согласны, тогда напишите номер кошелька для получения валюты, в противном случае надмите отмена";
+                KeyboardRow buttonRow = new KeyboardRow();
+                keyboardRows.add(buttonRow);
+                buttonRow.add("Отмена");
+
+                sendMessage.setText(stringBuilder);
                 break;
             }
             case ChatEntity.CHAT_STAGE_ACCOUNT_NUMBER_ENTERED:
             {
-                sendMessage.setText("account number entered");
+                sendMessage.setText("Введите ваш номер телефона, мы с вами свяжемся пссле проведения выплаты.");
                 break;
             }
             case ChatEntity.CHAT_STAGE_PHONE_ENTERED:
@@ -179,5 +331,12 @@ public class MessageHandlerImpl implements MessageHandler
         }
 
 
+    }
+
+    private double calculateCurrencyCountForUser()
+    {
+        return currentChat.getChatCurrencyToGive()
+                .getCourseInBTC() / currentChat.getChatCurrencyToReceive()
+                .getCourseInBTC() * currentChat.getCurrencyCount();
     }
 }

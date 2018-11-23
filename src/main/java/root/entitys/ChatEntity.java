@@ -2,6 +2,7 @@ package root.entitys;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -22,15 +23,37 @@ public class ChatEntity
     @ManyToOne
     private UserEntity userEntity;
     private int chatStage = CHAT_STAGE_NONE;
+    @ManyToMany
+    private CurrencyEntity chatCurrencyToGive;
+    @ManyToMany
+    private CurrencyEntity chatCurrencyToReceive;
+    private double currencyCount = 0;
+    private String contactPhone = "";
+    private String clientMoneyAccount = "";
+
+    public ChatEntity()
+    {
+
+    }
 
     public long getId()
     {
         return id;
     }
 
+    public void setId(long id)
+    {
+        this.id = id;
+    }
+
     public UserEntity getUserEntity()
     {
         return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity)
+    {
+        this.userEntity = userEntity;
     }
 
     public int getChatStage()
@@ -43,18 +66,53 @@ public class ChatEntity
         this.chatStage = chatStage;
     }
 
-    public void setId(long id)
+    public CurrencyEntity getChatCurrencyToGive()
     {
-        this.id = id;
+        return chatCurrencyToGive;
     }
 
-    public void setUserEntity(UserEntity userEntity)
+    public void setChatCurrencyToGive(CurrencyEntity chatCurrencyToGive)
     {
-        this.userEntity = userEntity;
+        this.chatCurrencyToGive = chatCurrencyToGive;
     }
 
-    public ChatEntity()
+    public CurrencyEntity getChatCurrencyToReceive()
     {
+        return chatCurrencyToReceive;
+    }
 
+    public void setChatCurrencyToReceive(CurrencyEntity chatCurrencyToReceive)
+    {
+        this.chatCurrencyToReceive = chatCurrencyToReceive;
+    }
+
+    public double getCurrencyCount()
+    {
+        return currencyCount;
+    }
+
+    public void setCurrencyCount(double currencyCount)
+    {
+        this.currencyCount = currencyCount;
+    }
+
+    public String getContactPhone()
+    {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone)
+    {
+        this.contactPhone = contactPhone;
+    }
+
+    public String getClientMoneyAccount()
+    {
+        return clientMoneyAccount;
+    }
+
+    public void setClientMoneyAccount(String clientMoneyAccount)
+    {
+        this.clientMoneyAccount = clientMoneyAccount;
     }
 }

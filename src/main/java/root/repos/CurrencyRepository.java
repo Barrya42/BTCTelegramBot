@@ -11,4 +11,6 @@ import root.entitys.CurrencyEntity;
 public interface CurrencyRepository extends JpaRepository<CurrencyEntity, Long>
 {
     List<CurrencyEntity> findAllByenabled(Boolean enabled);
+
+    List<CurrencyEntity> findAllByenabledToGive(Boolean enabled);
 }

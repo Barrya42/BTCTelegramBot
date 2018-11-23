@@ -33,4 +33,10 @@ public class CurrencyServiceImpl implements CurrencyService
 
         return currencyRepository.findAllByenabled(true);
     }
+
+    @Override
+    public List<CurrencyEntity> findAllEnabledToGive()
+    {
+        return currencyRepository.findAllByenabledToGive(true);
+    }
 }

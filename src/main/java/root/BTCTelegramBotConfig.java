@@ -18,9 +18,9 @@ import java.net.PasswordAuthentication;
 public class BTCTelegramBotConfig
 {
     @Autowired
-    private Environment properties;
-    @Autowired
     BotClass botClass;
+    @Autowired
+    private Environment properties;
 
     @Bean
     DefaultBotOptions defaultBotOptions()

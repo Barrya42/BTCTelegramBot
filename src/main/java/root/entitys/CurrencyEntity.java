@@ -17,7 +17,15 @@ public class CurrencyEntity
     private long id;
     private String name;
     @ColumnDefault(value = "true")
-    private boolean enabled = true;
+    private boolean enabled = true; //принимаем валюту
+    private boolean enabledToGive = true; // отдаем валюту
+    private double courseInBTC = 0;
+    private double courseInUSD = 0;
+
+    public CurrencyEntity()
+    {
+
+    }
 
     public long getId()
     {
@@ -49,8 +57,33 @@ public class CurrencyEntity
         this.enabled = enabled;
     }
 
-    public CurrencyEntity()
+    public boolean isEnabledToGive()
     {
+        return enabledToGive;
+    }
 
+    public void setEnabledToGive(boolean enabledToGive)
+    {
+        this.enabledToGive = enabledToGive;
+    }
+
+    public double getCourseInBTC()
+    {
+        return courseInBTC;
+    }
+
+    public void setCourseInBTC(double courseInBTC)
+    {
+        this.courseInBTC = courseInBTC;
+    }
+
+    public double getCourseInUSD()
+    {
+        return courseInUSD;
+    }
+
+    public void setCourseInUSD(double courseInUSD)
+    {
+        this.courseInUSD = courseInUSD;
     }
 }
