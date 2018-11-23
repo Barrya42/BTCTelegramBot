@@ -320,7 +320,7 @@ public class MessageHandlerImpl implements MessageHandler
             }
             case ChatEntity.CHAT_STAGE_PHONE_ENTERED:
             {
-                sendMessage.setText("phone entered");
+                sendMessage.setText("Ожидайте нашего звонка.");
                 break;
             }
             default:
