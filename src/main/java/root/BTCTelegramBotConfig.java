@@ -17,8 +17,7 @@ import java.net.PasswordAuthentication;
 @PropertySource("app.properties")
 public class BTCTelegramBotConfig
 {
-    @Autowired
-    BotClass botClass;
+
     @Autowired
     private Environment properties;
 
@@ -57,7 +56,7 @@ public class BTCTelegramBotConfig
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try
         {
-            return telegramBotsApi.registerBot(botClass);
+            return telegramBotsApi.registerBot(new BotClass(defaultBotOptions()));
         }
         catch (TelegramApiRequestException e)
         {

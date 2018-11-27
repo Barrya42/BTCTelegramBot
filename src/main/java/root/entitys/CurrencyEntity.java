@@ -18,8 +18,11 @@ public class CurrencyEntity
     private String name;
     @ColumnDefault(value = "true")
     private boolean enabled = true; //принимаем валюту
+    @ColumnDefault(value = "true")
     private boolean enabledToGive = true; // отдаем валюту
+    @ColumnDefault(value = "0")
     private double courseInBTC = 0;
+    @ColumnDefault(value = "0")
     private double courseInUSD = 0;
 
     public CurrencyEntity()

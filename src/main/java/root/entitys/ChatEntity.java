@@ -4,8 +4,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -25,9 +25,9 @@ public class ChatEntity
     @ManyToOne
     private UserEntity userEntity;
     private int chatStage = CHAT_STAGE_NONE;
-    @ManyToMany
+    @OneToOne
     private CurrencyEntity chatCurrencyToGive;
-    @ManyToMany
+    @OneToOne
     private CurrencyEntity chatCurrencyToReceive;
     private double currencyCount = 0;
     private String contactPhone = "";
