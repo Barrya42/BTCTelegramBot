@@ -34,4 +34,15 @@ public class RoleEntity
     {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof RoleEntity))
+        {
+            return false;
+        }
+
+        return super.equals(obj) || ((RoleEntity) obj).getId() == getId();
+    }
 }

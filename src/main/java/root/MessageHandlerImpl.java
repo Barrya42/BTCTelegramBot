@@ -41,16 +41,26 @@ public class MessageHandlerImpl implements MessageHandler
 
     @Override
     @Transactional
-    public SendMessage handleResponse(Message message)
+    public synchronized SendMessage handleResponse(Message message)
     {
         SendMessage responseMessage = new SendMessage();
-
         try
         {
             currentUser = findUserEntity(message.getFrom());
             currentChat = findUserChat(message.getChat());
-            processTextResponse(responseMessage, message.getText());
-            prepareButtons(responseMessage);
+            if (currentUser.getUserRole()
+                    .equals(roleService.getUserRole()))
+            {
+                //сообщения для пользователя
+                processUserTextResponse(responseMessage, message.getText());
+                prepareUserButtons(responseMessage);
+            }
+            else
+            {
+                //сообщения для оператора
+                processOperatorTextResponse(responseMessage, message.getText());
+                prepareOperatorButtons(responseMessage);
+            }
         }
         catch (RuntimeException e)
         {
@@ -60,7 +70,6 @@ public class MessageHandlerImpl implements MessageHandler
         }
         return responseMessage;
     }
-
 
     private UserEntity findUserEntity(User user)
     {
@@ -90,15 +99,14 @@ public class MessageHandlerImpl implements MessageHandler
 
     }
 
-    private void processTextResponse(SendMessage sendMessage, String incomingText)
+    private void processUserTextResponse(SendMessage sendMessage, String incomingText)
     {
         switch (currentChat.getChatStage())
         {
             case ChatEntity.CHAT_STAGE_NONE: // В начальном состоянии мбот ждет слова старт
             {
-                if (incomingText.toLowerCase()
-                        .equals("/start") || incomingText.toLowerCase()
-                        .equals("старт"))
+                if (incomingText
+                        .equalsIgnoreCase("/start") || incomingText.equalsIgnoreCase("старт"))
                 {
                     currentChat.setChatStage(ChatEntity.CHAT_STAGE_START);
                 }
@@ -166,14 +174,13 @@ public class MessageHandlerImpl implements MessageHandler
             }
             case ChatEntity.CHAT_STAGE_CURRENCY_TO_RECIVE_SELECTED:
             {
-                if (incomingText.toLowerCase()
-                        .matches("\\d{5}")) // допустим номер кошелька состоит из 5 цифр
+                if (incomingText.matches("\\d{5}")) // допустим номер кошелька состоит из 5 цифр
                 {
                     currentChat.setChatStage(ChatEntity.CHAT_STAGE_ACCOUNT_NUMBER_ENTERED);
                     currentChat.setClientMoneyAccount(incomingText);
                 }
-                else if (incomingText.toLowerCase()
-                        .equals("отмена"))
+                else if (incomingText
+                        .equalsIgnoreCase("отмена"))
                 {
                     currentChat.setChatStage(ChatEntity.CHAT_STAGE_NONE);
                 }
@@ -181,16 +188,18 @@ public class MessageHandlerImpl implements MessageHandler
             }
             case ChatEntity.CHAT_STAGE_ACCOUNT_NUMBER_ENTERED:
             {
-                currentChat.setContactPhone(incomingText.replaceAll("\\D",""));
+                currentChat.setContactPhone(incomingText.replaceAll("\\D", ""));
                 sendMessage.setText("Спасибо. Мы вам перезвоним.");
                 currentChat.setChatStage(ChatEntity.CHAT_STAGE_PHONE_ENTERED);
                 break;
             }
             case ChatEntity.CHAT_STAGE_PHONE_ENTERED:
             {
-                if(incomingText.toLowerCase().equals("подтвердить"))
+                if (incomingText.equalsIgnoreCase("подтвердить"))
                 {
                     // TODO: 23.11.2018 заверщить чат
+                    chatService.deleteChat(currentChat);
+                    sendMessage.setText("Обмен завершен. Спасибо");
                 }
                 break;
             }
@@ -202,7 +211,115 @@ public class MessageHandlerImpl implements MessageHandler
         }
     }
 
-    private void prepareButtons(SendMessage sendMessage)
+    private void processOperatorTextResponse(SendMessage sendMessage, String incomingText)
+    {
+        if (incomingText.equalsIgnoreCase("Получить все заявки."))
+        {
+            List<ChatEntity> chatEntities = chatService.findAll();
+            if (chatEntities.isEmpty())
+            {
+                sendMessage.setText("Нет активных заявок.");
+            }
+            else
+            {
+                String res = "";
+                for (ChatEntity chatEntity : chatEntities)
+                {
+                    res += chatEntity.toString();
+                    res += "\n";
+                }
+                sendMessage.setText(res);
+            }
+        }
+        else if (incomingText.equalsIgnoreCase("Удалить все заявки."))
+        {
+            chatService.deleteAll();
+            sendMessage.setText("Все заявки удалены.");
+        }
+        else if (incomingText.equalsIgnoreCase("Удалить по номеру."))
+        {
+            try
+            {
+                Optional<ChatEntity> chatEntity = chatService.findChatById(Long.parseLong(incomingText));
+                if (chatEntity.isPresent())
+                {
+                    chatService.deleteChat(chatEntity.get());
+                }
+                else
+                {
+                    sendMessage.setText("Заказа с таким номером не существует.");
+                }
+            }
+            catch (NumberFormatException e)
+            {
+                sendMessage.setText("Не верный номер(только цифры)");
+            }
+        }
+        else if (currentChat.getAdminMode())
+        {
+            if (incomingText.equalsIgnoreCase("установить комиссию"))
+            {
+                sendMessage.setText("Доделать");
+
+            }
+            else if (incomingText.equalsIgnoreCase("Список операторов."))
+            {
+                sendMessage.setText("Доделать");
+
+            }
+            else if (incomingText.equalsIgnoreCase("Удалить оператора по коду."))
+            {
+                sendMessage.setText("Доделать");
+            }
+            else
+            {
+                sendMessage.setText("Не верная команда.");
+            }
+        }
+        else if (incomingText.equals("Admin"))
+        {
+            //Admin mode
+            currentChat.setAdminMode(!currentChat.getAdminMode());
+        }
+        else
+        {
+            sendMessage.setText("Не верная команда.");
+        }
+    }
+
+    private void prepareOperatorButtons(SendMessage sendMessage)
+    {
+        sendMessage.setChatId(currentChat.getId());
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        replyKeyboardMarkup.setSelective(true);
+
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
+
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
+
+
+        KeyboardRow firstRow = new KeyboardRow();
+        keyboardRows.add(firstRow);
+        firstRow.add("Получить все заявки.");
+        firstRow.add("Удалить все заявки.");
+        firstRow.add("Удалить по коду.");
+        if (currentChat.getAdminMode())
+        {
+            KeyboardRow secondRow = new KeyboardRow();
+            secondRow.add("Установить комиссию.");
+            secondRow.add("Список операторов.");
+            secondRow.add("Удалить оператора по коду.");
+
+            keyboardRows.add(secondRow);
+        }
+
+    }
+
+    private void prepareUserButtons(SendMessage sendMessage)
     {
         sendMessage.setChatId(currentChat.getId());
 

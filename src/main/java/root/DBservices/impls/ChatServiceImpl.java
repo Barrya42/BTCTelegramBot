@@ -3,6 +3,7 @@ package root.DBservices.impls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import root.DBservices.ChatService;
@@ -22,7 +23,7 @@ public class ChatServiceImpl implements ChatService
     }
 
     @Override
-    public void cancelChat(ChatEntity chatEntity)
+    public void deleteChat(ChatEntity chatEntity)
     {
         chatRepository.delete(chatEntity);
     }
@@ -31,5 +32,17 @@ public class ChatServiceImpl implements ChatService
     public ChatEntity addChat(ChatEntity chatEntity)
     {
         return chatRepository.save(chatEntity);
+    }
+
+    @Override
+    public List<ChatEntity> findAll()
+    {
+        return chatRepository.findAll();
+    }
+
+    @Override
+    public void deleteAll()
+    {
+        chatRepository.deleteAll();
     }
 }

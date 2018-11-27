@@ -1,5 +1,7 @@
 package root.entitys;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -30,6 +32,8 @@ public class ChatEntity
     private double currencyCount = 0;
     private String contactPhone = "";
     private String clientMoneyAccount = "";
+    @ColumnDefault(value = "false")
+    private Boolean adminMode = false;
 
     public ChatEntity()
     {
@@ -114,5 +118,27 @@ public class ChatEntity
     public void setClientMoneyAccount(String clientMoneyAccount)
     {
         this.clientMoneyAccount = clientMoneyAccount;
+    }
+
+    public Boolean getAdminMode()
+    {
+        return adminMode;
+    }
+
+    public void setAdminMode(Boolean adminMode)
+    {
+        this.adminMode = adminMode;
+    }
+
+    @Override
+    public String toString()
+    {
+        String res = String.format("Заявка номер: %d\n" +
+                "Отдают валюту: %s " + " количество: %s\n" +
+                "Хотят валюту: %s " + " количество: %s\n" +
+                "Комиссия: %s\n" +
+                "Телефон для связи: %s", getId(), getChatCurrencyToGive().getName(), getCurrencyCount(), getChatCurrencyToReceive().getName(), 0, 0, getContactPhone());
+
+        return res;
     }
 }
