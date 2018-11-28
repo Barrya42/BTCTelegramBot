@@ -15,8 +15,7 @@ public class BotClass extends TelegramLongPollingBot
     @Autowired
     UserService userService;
     @Autowired
-    private
-    MessageHandler messageHandler;
+    private MessageHandler messageHandler;
     private String username = "CryptoExch42Bot";
     private String name = "BTCBot";
     private String apiToken = "764998454:AAH9vhYHWsUPa5Ix6Pd7vr69yoIra_vFJmQ";

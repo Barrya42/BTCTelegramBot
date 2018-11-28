@@ -1,7 +1,9 @@
 package root;
 
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -36,8 +38,11 @@ public class MessageHandlerImpl implements MessageHandler
     @Autowired
     private CurrencyService currencyService;
 
+
     private UserEntity currentUser;
     private ChatEntity currentChat;
+    @Value("${bot.tax}")
+    private double tax;
 
     @Override
     @Transactional
@@ -415,6 +420,7 @@ public class MessageHandlerImpl implements MessageHandler
             }
             case ChatEntity.CHAT_STAGE_CURRENCY_TO_RECIVE_SELECTED:
             {
+                currentChat.setCurrencyCountToReceive(calculateCurrencyCountForUser());
                 String stringBuilder = "За ваши " +
                         currentChat.getCurrencyCount() +
                         " " +
@@ -422,10 +428,11 @@ public class MessageHandlerImpl implements MessageHandler
                                 .getName() +
                         " " +
                         " вы получите " +
-                        calculateCurrencyCountForUser() +
+                        currentChat.getCurrencyCountToReceive() +
+                        " " +
                         currentChat.getChatCurrencyToReceive()
                                 .getName() +
-                        " Если вы согласны, тогда напишите номер кошелька для получения валюты, в противном случае надмите отмена";
+                        " Если вы согласны, тогда напишите номер кошелька для получения валюты, в противном случае нажмите отмена";
                 KeyboardRow buttonRow = new KeyboardRow();
                 keyboardRows.add(buttonRow);
                 buttonRow.add("Отмена");
@@ -460,6 +467,7 @@ public class MessageHandlerImpl implements MessageHandler
     {
         return currentChat.getChatCurrencyToGive()
                 .getCourseInBTC() / currentChat.getChatCurrencyToReceive()
-                .getCourseInBTC() * currentChat.getCurrencyCount();
+                .getCourseInBTC() * currentChat.getCurrencyCount() * ((100-tax)/100);
     }
+
 }

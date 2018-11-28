@@ -30,6 +30,7 @@ public class ChatEntity
     @OneToOne
     private CurrencyEntity chatCurrencyToReceive;
     private double currencyCount = 0;
+    private double currencyCountToReceive = 0;
     private String contactPhone = "";
     private String clientMoneyAccount = "";
     @ColumnDefault(value = "false")
@@ -100,6 +101,16 @@ public class ChatEntity
         this.currencyCount = currencyCount;
     }
 
+    public double getCurrencyCountToReceive()
+    {
+        return currencyCountToReceive;
+    }
+
+    public void setCurrencyCountToReceive(double currencyCountToReceive)
+    {
+        this.currencyCountToReceive = currencyCountToReceive;
+    }
+
     public String getContactPhone()
     {
         return contactPhone;
@@ -136,8 +147,7 @@ public class ChatEntity
         String res = String.format("Заявка номер: %d\n" +
                 "Отдают валюту: %s " + " количество: %s\n" +
                 "Хотят валюту: %s " + " количество: %s\n" +
-                "Комиссия: %s\n" +
-                "Телефон для связи: %s", getId(), getChatCurrencyToGive().getName(), getCurrencyCount(), getChatCurrencyToReceive().getName(), 0, 0, getContactPhone());
+                "Телефон для связи: %s", getId(), getChatCurrencyToGive().getName(), getCurrencyCount(), getChatCurrencyToReceive().getName(), 0, getContactPhone());
 
         return res;
     }
