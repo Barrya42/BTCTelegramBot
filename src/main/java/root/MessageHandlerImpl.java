@@ -1,7 +1,6 @@
 package root;
 
 
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -53,18 +52,27 @@ public class MessageHandlerImpl implements MessageHandler
         {
             currentUser = findUserEntity(message.getFrom());
             currentChat = findUserChat(message.getChat());
+            responseMessage.setChatId(currentChat.getId());
             if (currentUser.getUserRole()
                     .equals(roleService.getUserRole()))
             {
                 //сообщения для пользователя
                 processUserTextResponse(responseMessage, message.getText());
-                prepareUserButtons(responseMessage);
+                if (responseMessage.getText() == null || responseMessage.getText()
+                        .isEmpty())
+                {
+                    prepareUserButtons(responseMessage);
+                }
             }
             else
             {
                 //сообщения для оператора
                 processOperatorTextResponse(responseMessage, message.getText());
-                prepareOperatorButtons(responseMessage);
+                if (responseMessage.getText() == null || responseMessage.getText()
+                        .isEmpty())
+                {
+                    prepareOperatorButtons(responseMessage);
+                }
             }
         }
         catch (RuntimeException e)
@@ -450,7 +458,7 @@ public class MessageHandlerImpl implements MessageHandler
                 sendMessage.setText("Ожидайте нашего звонка. Или подтвердите получение выплаты.");
                 KeyboardRow buttonRow = new KeyboardRow();
                 keyboardRows.add(buttonRow);
-                buttonRow.add("Подтвердить.");
+                buttonRow.add("Подтвердить");
                 break;
             }
             default:
@@ -467,7 +475,7 @@ public class MessageHandlerImpl implements MessageHandler
     {
         return currentChat.getChatCurrencyToGive()
                 .getCourseInBTC() / currentChat.getChatCurrencyToReceive()
-                .getCourseInBTC() * currentChat.getCurrencyCount() * ((100-tax)/100);
+                .getCourseInBTC() * currentChat.getCurrencyCount() * ((100 - tax) / 100);
     }
 
 }

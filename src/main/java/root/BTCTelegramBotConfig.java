@@ -20,6 +20,8 @@ public class BTCTelegramBotConfig
 
     @Autowired
     private Environment properties;
+    @Autowired
+    private BotClass botClass;
 
     @Bean
     DefaultBotOptions defaultBotOptions()
@@ -56,7 +58,7 @@ public class BTCTelegramBotConfig
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try
         {
-            return telegramBotsApi.registerBot(new BotClass(defaultBotOptions()));
+            return telegramBotsApi.registerBot(botClass);
         }
         catch (TelegramApiRequestException e)
         {

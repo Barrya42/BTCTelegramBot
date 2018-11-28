@@ -20,9 +20,9 @@ public class CurrencyEntity
     private boolean enabled = true; //принимаем валюту
     @ColumnDefault(value = "true")
     private boolean enabledToGive = true; // отдаем валюту
-    @ColumnDefault(value = "0")
+    @ColumnDefault(value = "2")
     private double courseInBTC = 0;
-    @ColumnDefault(value = "0")
+    @ColumnDefault(value = "60")
     private double courseInUSD = 0;
 
     public CurrencyEntity()
