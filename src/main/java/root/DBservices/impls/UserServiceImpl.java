@@ -3,9 +3,11 @@ package root.DBservices.impls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import root.DBservices.UserService;
+import root.entitys.RoleEntity;
 import root.entitys.UserEntity;
 import root.repos.UserRepository;
 
@@ -37,5 +39,23 @@ public class UserServiceImpl implements UserService
     public UserEntity unBlockUser(UserEntity userEntity)
     {
         return null;
+    }
+
+    @Override
+    public List<UserEntity> findAllWithRole(RoleEntity roleEntity)
+    {
+        return userRepository.findAllByuserRole(roleEntity);
+    }
+
+    @Override
+    public void deleteUser(UserEntity userEntity)
+    {
+        userRepository.deleteById(userEntity.getId());
+    }
+
+    @Override
+    public void deleteUser(long id)
+    {
+        userRepository.deleteById(id);
     }
 }

@@ -63,4 +63,12 @@ public class UserEntity
     {
         this.blocked = blocked;
     }
+
+    @Override
+    public String toString()
+    {
+
+        return "id: " + getId() + "\n" +
+                "name: " + getName();
+    }
 }

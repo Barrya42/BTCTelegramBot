@@ -270,17 +270,41 @@ public class MessageHandlerImpl implements MessageHandler
         }
         else if (currentChat.getAdminMode())
         {
-            if (incomingText.equalsIgnoreCase("установить комиссию"))
+            if (incomingText.toLowerCase()
+                    .startsWith("установить"))
             {
-                sendMessage.setText("Доделать");
-
+                //sendMessage.setText("Доделать");
+                try
+                {
+                    tax = Double.parseDouble(incomingText.replaceAll("установить", "")
+                            .trim());
+                }
+                catch (NumberFormatException e)
+                {
+                    sendMessage.setText("не верный формат числа.");
+                }
             }
-            else if (incomingText.equalsIgnoreCase("Список операторов."))
+            else if (incomingText.equalsIgnoreCase("Список операторов"))
             {
-                sendMessage.setText("Доделать");
-
+                List<UserEntity> userEntities = userService.findAllWithRole(roleService.getOperatorRole());
+                sendMessage.setText(userEntities.toString());
             }
-            else if (incomingText.equalsIgnoreCase("Удалить оператора по коду."))
+            else if (incomingText.toLowerCase()
+                    .startsWith("Удалить"))
+            {
+                try
+                {
+                    long id = Long.parseLong(incomingText.replaceAll("Удалить", "")
+                            .trim());
+                    userService.deleteUser(id);
+                }
+                catch (NumberFormatException e)
+                {
+                    sendMessage.setText("не верный формат числа.");
+                }
+            }
+            else if (incomingText.toLowerCase()
+                    .startsWith("Добавить"))
             {
                 sendMessage.setText("Доделать");
             }
@@ -293,6 +317,16 @@ public class MessageHandlerImpl implements MessageHandler
         {
             //Admin mode
             currentChat.setAdminMode(!currentChat.getAdminMode());
+            sendMessage.setText("Режим администратора!\n" +
+                    "Команды: \n" +
+                    "Добавить 9123457788 (добавит в список операторов человека по номеру телефона, " +
+                    "для этого ему нужно найти бота и нажать старт, он будет автоматически добавлен.)\n" +
+                    "\n" +
+                    "Утановить 12 (установит процент комиссии взимаемый с клиента за пользование сервисом. Процент будет минусоваться из вознаграждения пользователя.)\n" +
+                    "\n" +
+                    "Список операторов (выведет список активных операторов)\n" +
+                    "\n" +
+                    "Удалить 112244 (Удалить оператора из списка по коду, см \"Список операторов\")");
         }
         else
         {
@@ -322,12 +356,14 @@ public class MessageHandlerImpl implements MessageHandler
         firstRow.add("Удалить по коду.");
         if (currentChat.getAdminMode())
         {
-            KeyboardRow secondRow = new KeyboardRow();
-            secondRow.add("Установить комиссию.");
-            secondRow.add("Список операторов.");
-            secondRow.add("Удалить оператора по коду.");
+//            KeyboardRow secondRow = new KeyboardRow();
+//            secondRow.add("Установить комиссию.");
+//            secondRow.add("Список операторов.");
+//            secondRow.add("Удалить оператора по коду.");
+//            secondRow.add("Добавить оператора(телефон).");
+//
+//            keyboardRows.add(secondRow);
 
-            keyboardRows.add(secondRow);
         }
 
     }
@@ -353,6 +389,7 @@ public class MessageHandlerImpl implements MessageHandler
                 KeyboardButton keyboardButton = new KeyboardButton();
 
                 keyboardButton.setText("Старт");
+                keyboardButton.setRequestContact(true);
                 KeyboardRow firstRow = new KeyboardRow();
                 keyboardRows.add(firstRow);
                 firstRow.add(keyboardButton);
