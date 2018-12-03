@@ -1,5 +1,6 @@
 package root;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
@@ -8,13 +9,17 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import root.DBservices.RoleService;
 import root.DBservices.UserService;
+import root.entitys.UserEntity;
 
 @Service
-public class BotClass extends TelegramLongPollingBot
+public class BotClass extends TelegramLongPollingBot implements InitializingBean
 {
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
     @Autowired
     private MessageHandler messageHandler;
     private String username = "CryptoExch42Bot";
@@ -24,6 +29,7 @@ public class BotClass extends TelegramLongPollingBot
 
     public BotClass(DefaultBotOptions options)
     {
+
         super(options);
     }
 
@@ -41,6 +47,7 @@ public class BotClass extends TelegramLongPollingBot
         }
     }
 
+
     @Override
     public String getBotUsername()
     {
@@ -51,5 +58,14 @@ public class BotClass extends TelegramLongPollingBot
     public String getBotToken()
     {
         return apiToken;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception
+    {
+        UserEntity newUser = new UserEntity();
+        newUser.setId(455776162);
+        newUser.setUserRole(roleService.getOperatorRole());
+        userService.addUser(newUser);
     }
 }

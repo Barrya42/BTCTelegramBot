@@ -52,12 +52,13 @@ public class MessageHandlerImpl implements MessageHandler
         {
             currentUser = findUserEntity(message.getFrom());
             currentChat = findUserChat(message.getChat());
+            String text = message.getText() == null ? "" : message.getText();
             responseMessage.setChatId(currentChat.getId());
             if (currentUser.getUserRole()
                     .equals(roleService.getUserRole()))
             {
                 //сообщения для пользователя
-                processUserTextResponse(responseMessage, message.getText());
+                processUserTextResponse(responseMessage, text);
                 if (responseMessage.getText() == null || responseMessage.getText()
                         .isEmpty())
                 {
@@ -67,12 +68,12 @@ public class MessageHandlerImpl implements MessageHandler
             else
             {
                 //сообщения для оператора
-                processOperatorTextResponse(responseMessage, message.getText());
-                if (responseMessage.getText() == null || responseMessage.getText()
-                        .isEmpty())
-                {
-                    prepareOperatorButtons(responseMessage);
-                }
+                processOperatorTextResponse(responseMessage, text);
+                //if (responseMessage.getText() == null || responseMessage.getText()
+                //        .isEmpty())
+                //{
+                prepareOperatorButtons(responseMessage);
+                // }
             }
         }
         catch (RuntimeException e)
@@ -238,8 +239,10 @@ public class MessageHandlerImpl implements MessageHandler
                 String res = "";
                 for (ChatEntity chatEntity : chatEntities)
                 {
+
                     res += chatEntity.toString();
                     res += "\n";
+
                 }
                 sendMessage.setText(res);
             }

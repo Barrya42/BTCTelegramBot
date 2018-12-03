@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import root.DBservices.ChatService;
 import root.entitys.ChatEntity;
+import root.entitys.RoleEntity;
 import root.repos.ChatRepository;
 
 @Service
@@ -38,6 +40,20 @@ public class ChatServiceImpl implements ChatService
     public List<ChatEntity> findAll()
     {
         return chatRepository.findAll();
+    }
+
+    @Override
+    public List<ChatEntity> findAllWithRole(RoleEntity roleEntity)
+    {
+        return chatRepository.findAll()
+                .stream()
+                .filter(chatEntity ->
+                {
+                    return chatEntity.getUserEntity()
+                            .getUserRole()
+                            .equals(roleEntity);
+                })
+                .collect(Collectors.toList());
     }
 
     @Override

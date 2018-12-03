@@ -33,8 +33,8 @@ public class RoleServiceImpl implements RoleService
                 .orElseGet(() ->
                 {
                     RoleEntity roleEntity = new RoleEntity();
-                    roleEntity.setId(0L);
-                    roleEntity.setName("User");
+                    roleEntity.setId(1L);
+                    roleEntity.setName("Operator");
                     return rolesRepository.save(roleEntity);
                 });
     }

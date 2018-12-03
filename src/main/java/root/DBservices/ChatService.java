@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import root.entitys.ChatEntity;
+import root.entitys.RoleEntity;
 
 public interface ChatService
 {
@@ -14,6 +15,8 @@ public interface ChatService
     public ChatEntity addChat(ChatEntity chatEntity);
 
     public List<ChatEntity> findAll();
+
+    List<ChatEntity> findAllWithRole(RoleEntity roleEntity);
 
     public void deleteAll();
 }
