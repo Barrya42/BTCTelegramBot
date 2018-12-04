@@ -229,7 +229,7 @@ public class MessageHandlerImpl implements MessageHandler
     {
         if (incomingText.equalsIgnoreCase("Получить все заявки."))
         {
-            List<ChatEntity> chatEntities = chatService.findAll();
+            List<ChatEntity> chatEntities = chatService.findAllWithRole(roleService.getUserRole());
             if (chatEntities.isEmpty())
             {
                 sendMessage.setText("Нет активных заявок.");
@@ -346,7 +346,7 @@ public class MessageHandlerImpl implements MessageHandler
         replyKeyboardMarkup.setSelective(true);
 
         replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
 
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         replyKeyboardMarkup.setKeyboard(keyboardRows);
