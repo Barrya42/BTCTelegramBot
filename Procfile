@@ -1,1 +1,1 @@
-worker: java $JAVA_OPTS -jar target/BTCTelegramBot-1.0-SNAPSHOT.jar -Dspring.profiles.active=heroku
+worker: java $JAVA_OPTS -jar -Dspring.profiles.active=heroku target/BTCTelegramBot-1.0-SNAPSHOT.jar
