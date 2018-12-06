@@ -13,6 +13,7 @@ public class UserEntity
 {
     @Id
     private long id;
+    @ColumnDefault(value = "")
     private String name;
     @ColumnDefault(value = "false")
     private boolean blocked = false;
@@ -69,6 +70,7 @@ public class UserEntity
     {
 
         return "id: " + getId() + "\n" +
-                "name: " + getName();
+                "name: " + getName() + "\n" +
+                "blocked: " + isBlocked();
     }
 }

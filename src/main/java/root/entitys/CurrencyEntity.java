@@ -15,14 +15,15 @@ public class CurrencyEntity
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @ColumnDefault(value = "")
     private String name;
     @ColumnDefault(value = "true")
     private boolean enabled = true; //принимаем валюту
     @ColumnDefault(value = "true")
     private boolean enabledToGive = true; // отдаем валюту
-    @ColumnDefault(value = "2")
+    @ColumnDefault(value = "0")
     private double courseInBTC = 0;
-    @ColumnDefault(value = "60")
+    @ColumnDefault(value = "0")
     private double courseInUSD = 0;
 
     public CurrencyEntity()

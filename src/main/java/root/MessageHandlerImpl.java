@@ -271,6 +271,24 @@ public class MessageHandlerImpl implements MessageHandler
                 sendMessage.setText("Не верный номер(только цифры)");
             }
         }
+        else if (incomingText.equals("Admin"))
+        {
+            //Admin mode
+            currentChat.setAdminMode(!currentChat.getAdminMode());
+            if (currentChat.getAdminMode())
+            {
+                sendMessage.setText("Режим администратора!\n" +
+                        "Команды: \n" +
+                        "Добавить 9123457788 (добавит в список операторов человека по номеру телефона, " +
+                        "для этого ему нужно найти бота и нажать старт, он будет автоматически добавлен.)\n" +
+                        "\n" +
+                        "Установить 12 (установит процент комиссии взимаемый с клиента за пользование сервисом. Процент будет минусоваться из вознаграждения пользователя.)\n" +
+                        "\n" +
+                        "Список операторов (выведет список активных операторов)\n" +
+                        "\n" +
+                        "Удалить 112244 (Удалить оператора из списка по коду, см \"Список операторов\")");
+            }
+        }
         else if (currentChat.getAdminMode())
         {
             if (incomingText.toLowerCase()
@@ -316,21 +334,7 @@ public class MessageHandlerImpl implements MessageHandler
                 sendMessage.setText("Не верная команда.");
             }
         }
-        else if (incomingText.equals("Admin"))
-        {
-            //Admin mode
-            currentChat.setAdminMode(!currentChat.getAdminMode());
-            sendMessage.setText("Режим администратора!\n" +
-                    "Команды: \n" +
-                    "Добавить 9123457788 (добавит в список операторов человека по номеру телефона, " +
-                    "для этого ему нужно найти бота и нажать старт, он будет автоматически добавлен.)\n" +
-                    "\n" +
-                    "Утановить 12 (установит процент комиссии взимаемый с клиента за пользование сервисом. Процент будет минусоваться из вознаграждения пользователя.)\n" +
-                    "\n" +
-                    "Список операторов (выведет список активных операторов)\n" +
-                    "\n" +
-                    "Удалить 112244 (Удалить оператора из списка по коду, см \"Список операторов\")");
-        }
+
         else
         {
             sendMessage.setText("Не верная команда.");
@@ -466,7 +470,7 @@ public class MessageHandlerImpl implements MessageHandler
                 }
                 break;
             }
-            case ChatEntity.CHAT_STAGE_CURRENCY_TO_RECIVE_SELECTED:
+            case ChatEntity.CHAT_STAGE_CURRENCY_TO_RECIVE_SELECTED: //Запрашиваем номер счета для перевода денег
             {
                 currentChat.setCurrencyCountToReceive(calculateCurrencyCountForUser());
                 String stringBuilder = "За ваши " +
@@ -488,7 +492,7 @@ public class MessageHandlerImpl implements MessageHandler
                 sendMessage.setText(stringBuilder);
                 break;
             }
-            case ChatEntity.CHAT_STAGE_ACCOUNT_NUMBER_ENTERED:
+            case ChatEntity.CHAT_STAGE_ACCOUNT_NUMBER_ENTERED: // Запрашиваем номер телефона
             {
                 sendMessage.setText("Введите ваш номер телефона, мы с вами свяжемся пссле проведения выплаты.");
                 break;

@@ -29,9 +29,13 @@ public class ChatEntity
     private CurrencyEntity chatCurrencyToGive;
     @OneToOne
     private CurrencyEntity chatCurrencyToReceive;
+    @ColumnDefault(value = "0")
     private double currencyCount = 0;
+    @ColumnDefault(value = "0")
     private double currencyCountToReceive = 0;
+    @ColumnDefault(value = "")
     private String contactPhone = "";
+    @ColumnDefault(value = "")
     private String clientMoneyAccount = "";
     @ColumnDefault(value = "false")
     private Boolean adminMode = false;
