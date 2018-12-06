@@ -7,6 +7,7 @@ import org.hibernate.cfg.Environment;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
@@ -16,6 +17,7 @@ import javax.sql.DataSource;
 
 @Profile("heroku")
 @Configuration
+@EnableJpaRepositories(basePackages = "root.repos", entityManagerFactoryRef = "emf")
 public class DBConfig
 {
 
@@ -33,7 +35,7 @@ public class DBConfig
         return new HikariDataSource(config);
     }
 
-    @Bean
+    @Bean(name = "emf")
     public LocalContainerEntityManagerFactoryBean configureEntityManagerFactory()
     {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
