@@ -23,6 +23,9 @@ public class DBConfig
     {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("org.postgresql.Driver");
+        config.setJdbcUrl(System.getenv("JDBC_DATABASE_URL"));
+        config.setUsername(System.getenv("JDBC_DATABASE_USERNAME"));
+        config.setPassword(System.getenv("JDBC_DATABASE_PASSWORD"));
         DataSource dataSource = new HikariDataSource(config);
 
 
