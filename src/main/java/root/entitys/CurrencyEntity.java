@@ -15,7 +15,7 @@ public class CurrencyEntity
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @ColumnDefault(value = "empty")
+    @ColumnDefault(value = "'empty'")
     private String name;
     @ColumnDefault(value = "true")
     private boolean enabled = true; //принимаем валюту
