@@ -13,7 +13,7 @@ public class UserEntity
 {
     @Id
     private long id;
-    @ColumnDefault(value = "")
+    @ColumnDefault(value = "name")
     private String name;
     @ColumnDefault(value = "false")
     private boolean blocked = false;

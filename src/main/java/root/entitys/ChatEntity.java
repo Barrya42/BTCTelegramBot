@@ -33,9 +33,9 @@ public class ChatEntity
     private double currencyCount = 0;
     @ColumnDefault(value = "0")
     private double currencyCountToReceive = 0;
-    @ColumnDefault(value = "")
-    private String contactPhone = "";
-    @ColumnDefault(value = "")
+    @ColumnDefault(value = "0")
+    private String contactPhone = "00000";
+    @ColumnDefault(value = "00000")
     private String clientMoneyAccount = "";
     @ColumnDefault(value = "false")
     private Boolean adminMode = false;
