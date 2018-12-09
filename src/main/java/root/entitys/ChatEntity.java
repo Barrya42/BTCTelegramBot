@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Chats")
+@Table(name = "chats")
 public class ChatEntity
 {
     public static final int CHAT_STAGE_NONE = -1;
