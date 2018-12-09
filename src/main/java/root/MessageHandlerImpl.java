@@ -288,6 +288,10 @@ public class MessageHandlerImpl implements MessageHandler
                         "\n" +
                         "Удалить 112244 (Удалить оператора из списка по коду, см \"Список операторов\")");
             }
+            else
+            {
+                sendMessage.setText("Выход и зрежима админимтартора.");
+            }
         }
         else if (currentChat.getAdminMode())
         {
