@@ -286,11 +286,11 @@ public class MessageHandlerImpl implements MessageHandler
                         "\n" +
                         "Список операторов (выведет список активных операторов)\n" +
                         "\n" +
-                        "Удалить 112244 (Удалить оператора из списка по коду, см \"Список операторов\")");
+                        "Удалить 112244456 (Удалить оператора из списка по коду, см \"Список операторов\")");
             }
             else
             {
-                sendMessage.setText("Выход и зрежима админимтартора.");
+                sendMessage.setText("Выход из режима админимтартора.");
             }
         }
         else if (currentChat.getAdminMode())
@@ -298,7 +298,6 @@ public class MessageHandlerImpl implements MessageHandler
             if (incomingText.toLowerCase()
                     .startsWith("установить"))
             {
-                //sendMessage.setText("Доделать");
                 try
                 {
                     tax = Double.parseDouble(incomingText.replaceAll("установить", "")
