@@ -1,7 +1,5 @@
 package root.entitys;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Entity;
@@ -13,7 +11,7 @@ import javax.persistence.ManyToOne;
 public class UserEntity
 {
     @Id
-    @Cascade(value = CascadeType.SAVE_UPDATE)
+    //@Cascade(value = CascadeType.SAVE_UPDATE)
     private long id;
     @ColumnDefault(value = "'empty'")
     private String name;
