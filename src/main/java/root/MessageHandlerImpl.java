@@ -320,7 +320,7 @@ public class MessageHandlerImpl implements MessageHandler
                 {
                     long id = Long.parseLong(incomingText.replaceAll("Удалить", "")
                             .trim());
-                    userService.deleteUser(id);
+                    //userService.deleteUser(id);
                     Optional<UserEntity> user = userService.findUserById(id);
                     if (user.isPresent())
                     {

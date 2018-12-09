@@ -46,6 +46,7 @@ public class DBConfig
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Properties jpaProperties = new Properties();
+        jpaProperties.put(Environment.SHOW_SQL, true);
         jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, "org.hibernate.dialect.PostgreSQL9Dialect");
         jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, Action.UPDATE);
         jpaProperties.put(Environment.NON_CONTEXTUAL_LOB_CREATION, true);
