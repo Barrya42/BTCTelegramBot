@@ -66,6 +66,21 @@ public class UserEntity
     }
 
     @Override
+    public boolean equals(Object o)
+    {
+        boolean res = super.equals(o);
+        if (res)
+        {
+
+        }
+        else
+        {
+            res = ((UserEntity) o).getId() == getId();
+        }
+        return res;
+    }
+
+    @Override
     public String toString()
     {
 

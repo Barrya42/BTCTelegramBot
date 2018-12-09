@@ -326,6 +326,11 @@ public class MessageHandlerImpl implements MessageHandler
                     {
                         user.get()
                                 .setUserRole(roleService.getUserRole());
+                        if (currentChat.getUserEntity()
+                                .equals(user.get()))
+                        {
+                            currentChat.setAdminMode(false);
+                        }
                         sendMessage.setText("Пользователь теперь не оператор.");
                     }
                     else
