@@ -16,6 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import root.DBservices.ChatService;
 import root.DBservices.CurrencyService;
@@ -36,6 +37,8 @@ public class MessageHandlerImpl implements MessageHandler
     private ChatService chatService;
     @Autowired
     private CurrencyService currencyService;
+    @Autowired
+    Logger logger;
 
 
     private UserEntity currentUser;
@@ -117,8 +120,9 @@ public class MessageHandlerImpl implements MessageHandler
     {
         switch (currentChat.getChatStage())
         {
-            case ChatEntity.CHAT_STAGE_NONE: // В начальном состоянии мбот ждет слова старт
+            case ChatEntity.CHAT_STAGE_NONE: // В начальном состоянии бот ждет слова старт
             {
+                logger.info("CHAT_STAGE_NONE");
                 if (incomingText
                         .equalsIgnoreCase("/start") || incomingText.equalsIgnoreCase("старт"))
                 {
@@ -128,6 +132,7 @@ public class MessageHandlerImpl implements MessageHandler
             }
             case ChatEntity.CHAT_STAGE_START: //ждем ввода валюты которую пользователь хочет поменять
             {
+                logger.info("CHAT_STAGE_START");
                 List<CurrencyEntity> enabledCurrencies = currencyService.findAllEnabled();
                 if (!incomingText.isEmpty())
                 {
