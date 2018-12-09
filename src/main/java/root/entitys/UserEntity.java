@@ -5,10 +5,9 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "users")
+//@Table(name = "users")
 public class UserEntity
 {
     @Id

@@ -2,10 +2,9 @@ package root.entitys;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "roles")
+//@Table(name = "roles")
 public class RoleEntity
 {
     @Id
