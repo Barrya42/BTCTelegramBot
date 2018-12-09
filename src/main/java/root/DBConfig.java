@@ -48,7 +48,7 @@ public class DBConfig
         Properties jpaProperties = new Properties();
         jpaProperties.put(Environment.SHOW_SQL, true);
         jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, "org.hibernate.dialect.PostgreSQL9Dialect");
-        jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, Action.UPDATE);
+        jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, Action.CREATE);
         jpaProperties.put(Environment.NON_CONTEXTUAL_LOB_CREATION, true);
         //spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
