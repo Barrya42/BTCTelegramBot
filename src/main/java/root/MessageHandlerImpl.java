@@ -321,6 +321,16 @@ public class MessageHandlerImpl implements MessageHandler
                     long id = Long.parseLong(incomingText.replaceAll("Удалить", "")
                             .trim());
                     userService.deleteUser(id);
+                    Optional<UserEntity> user = userService.findUserById(id);
+                    if (user.isPresent())
+                    {
+                        user.get()
+                                .setUserRole(roleService.getUserRole());
+                    }
+                    else
+                    {
+                        sendMessage.setText("Нет такого пользователя.");
+                    }
                 }
                 catch (NumberFormatException e)
                 {
