@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import org.hibernate.cfg.Environment;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -28,6 +29,7 @@ public class DBConfig
         config.setDriverClassName("org.postgresql.Driver");
         config.setJdbcUrl(System.getenv("JDBC_DATABASE_URL"));
         config.setUsername(System.getenv("JDBC_DATABASE_USERNAME"));
+        config.setMaximumPoolSize(10);
         config.setPassword(System.getenv("JDBC_DATABASE_PASSWORD"));
         DataSource dataSource = new HikariDataSource(config);
 
@@ -45,7 +47,7 @@ public class DBConfig
 
         Properties jpaProperties = new Properties();
         jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, "org.hibernate.dialect.PostgreSQL9Dialect");
-        jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "update");
+        jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, SchemaExport.Action.BOTH);
         jpaProperties.put(Environment.NON_CONTEXTUAL_LOB_CREATION, true);
         //spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
