@@ -6,9 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
-import org.telegram.telegrambots.meta.generics.BotSession;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
@@ -20,8 +17,8 @@ public class BTCTelegramBotConfig
 
     @Autowired
     private Environment properties;
-    @Autowired
-    private BotClass botClass;
+//    @Autowired
+//    private BotClass botClass;
 
     @Bean
     DefaultBotOptions defaultBotOptions()
@@ -52,19 +49,19 @@ public class BTCTelegramBotConfig
         return defaultBotOptions;
     }
 
-    @Bean
-    BotSession botSession()
-    {
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-        try
-        {
-            return telegramBotsApi.registerBot(botClass);
-        }
-        catch (TelegramApiRequestException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    @Bean
+//    BotSession botSession()
+//    {
+//        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+//        try
+//        {
+//            return telegramBotsApi.registerBot(botClass);
+//        }
+//        catch (TelegramApiRequestException e)
+//        {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
 }
