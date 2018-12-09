@@ -24,6 +24,7 @@ public class ChatEntity
     private long id;
     @ManyToOne(cascade = {CascadeType.ALL})
     private UserEntity userEntity;
+    @ColumnDefault(value = "-1")
     private int chatStage = CHAT_STAGE_NONE;
     @OneToOne
     private CurrencyEntity chatCurrencyToGive;
@@ -148,11 +149,10 @@ public class ChatEntity
     @Override
     public String toString()
     {
-        String res = String.format("Заявка номер: %d\n" +
+
+        return String.format("Заявка номер: %d\n" +
                 "Отдают валюту: %s " + " количество: %s\n" +
                 "Хотят валюту: %s " + " количество: %s\n" +
                 "Телефон для связи: %s", getId(), getChatCurrencyToGive().getName(), getCurrencyCount(), getChatCurrencyToReceive().getName(), 0, getContactPhone());
-
-        return res;
     }
 }

@@ -326,6 +326,7 @@ public class MessageHandlerImpl implements MessageHandler
                     {
                         user.get()
                                 .setUserRole(roleService.getUserRole());
+                        sendMessage.setText("Пользователь теперь не оператор.");
                     }
                     else
                     {
@@ -374,8 +375,8 @@ public class MessageHandlerImpl implements MessageHandler
         firstRow.add("Получить все заявки.");
         firstRow.add("Удалить все заявки.");
         firstRow.add("Удалить по коду.");
-        if (currentChat.getAdminMode())
-        {
+//        if (currentChat.getAdminMode())
+//        {
 //            KeyboardRow secondRow = new KeyboardRow();
 //            secondRow.add("Установить комиссию.");
 //            secondRow.add("Список операторов.");
@@ -384,7 +385,7 @@ public class MessageHandlerImpl implements MessageHandler
 //
 //            keyboardRows.add(secondRow);
 
-        }
+//        }
 
     }
 
