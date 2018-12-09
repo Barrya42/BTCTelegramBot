@@ -2,6 +2,7 @@ package root.entitys;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -21,7 +22,7 @@ public class ChatEntity
 
     @Id
     private long id;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     private UserEntity userEntity;
     private int chatStage = CHAT_STAGE_NONE;
     @OneToOne
