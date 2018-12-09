@@ -315,7 +315,7 @@ public class MessageHandlerImpl implements MessageHandler
                 sendMessage.setText(userEntities.toString());
             }
             else if (incomingText.toLowerCase()
-                    .startsWith("Удалить"))
+                    .startsWith("удалить"))
             {
                 try
                 {
@@ -329,7 +329,7 @@ public class MessageHandlerImpl implements MessageHandler
                 }
             }
             else if (incomingText.toLowerCase()
-                    .startsWith("Добавить"))
+                    .startsWith("добавить"))
             {
                 sendMessage.setText("Доделать");
             }
