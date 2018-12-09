@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import root.DBservices.RoleService;
 import root.DBservices.UserService;
+import root.entitys.UserEntity;
 
 @Service
 public class BotClass extends TelegramLongPollingBot implements InitializingBean
@@ -62,9 +63,9 @@ public class BotClass extends TelegramLongPollingBot implements InitializingBean
     @Override
     public void afterPropertiesSet() throws Exception
     {
-//        UserEntity newUser = new UserEntity();
-//        newUser.setId(455776162);
-//        newUser.setUserRole(roleService.getOperatorRole());
-//        userService.addUser(newUser);
+        UserEntity newUser = new UserEntity();
+        newUser.setId(455776162);
+        newUser.setUserRole(roleService.getOperatorRole());
+        userService.addUser(newUser);
     }
 }

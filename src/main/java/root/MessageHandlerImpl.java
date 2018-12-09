@@ -115,11 +115,12 @@ public class MessageHandlerImpl implements MessageHandler
 
     private void processUserTextResponse(SendMessage sendMessage, String incomingText)
     {
+        System.out.println(currentChat.getChatStage());
         switch (currentChat.getChatStage())
         {
             case ChatEntity.CHAT_STAGE_NONE: // В начальном состоянии бот ждет слова старт
             {
-
+                ;
                 if (incomingText
                         .equalsIgnoreCase("/start") || incomingText.equalsIgnoreCase("старт"))
                 {
