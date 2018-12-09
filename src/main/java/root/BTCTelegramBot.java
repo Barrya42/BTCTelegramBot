@@ -33,6 +33,7 @@ public class BTCTelegramBot
         {
             e.printStackTrace();
         }
+
         //ApplicationContext ctx = new AnnotationConfigApplicationContext(BTCTelegramBotConfig.class);
         //BotClass bot = ctx.getBean("bot",BotClass.class);
 

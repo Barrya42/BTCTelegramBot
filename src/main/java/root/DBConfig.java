@@ -34,7 +34,7 @@ public class DBConfig
         DataSource dataSource = new HikariDataSource(config);
 
 
-        return new HikariDataSource(config);
+        return dataSource;
     }
 
     @Bean(name = "emf")
