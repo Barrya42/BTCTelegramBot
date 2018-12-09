@@ -417,7 +417,7 @@ public class MessageHandlerImpl implements MessageHandler
                 KeyboardButton keyboardButton = new KeyboardButton();
 
                 keyboardButton.setText("Старт");
-                keyboardButton.setRequestContact(true);
+//                keyboardButton.setRequestContact(true);
                 KeyboardRow firstRow = new KeyboardRow();
                 keyboardRows.add(firstRow);
                 firstRow.add(keyboardButton);
