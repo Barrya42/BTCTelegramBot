@@ -1,8 +1,8 @@
 package root;
 
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,19 +14,22 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.regex.PatternSyntaxException;
 
+import root.DBentitys.ChatEntity;
+import root.DBentitys.CurrencyEntity;
+import root.DBentitys.UserEntity;
 import root.DBservices.ChatService;
 import root.DBservices.CurrencyService;
 import root.DBservices.RoleService;
 import root.DBservices.UserService;
-import root.entitys.ChatEntity;
-import root.entitys.CurrencyEntity;
-import root.entitys.UserEntity;
 
 @Component
-public class MessageHandlerImpl implements MessageHandler
+public class MessageHandlerImpl implements MessageHandler, InitializingBean
 {
     @Autowired
     private UserService userService;
@@ -40,8 +43,12 @@ public class MessageHandlerImpl implements MessageHandler
 
     private UserEntity currentUser;
     private ChatEntity currentChat;
-    @Value("${bot.tax}")
+
+    private Set<String> phonesForOperators = new HashSet<>();
+
     private double tax;
+    //@Value(value = "#{bot.admin.secret}")
+    private String adminSecret;
 
     @Override
     @Transactional
@@ -125,6 +132,24 @@ public class MessageHandlerImpl implements MessageHandler
                 {
                     currentChat.setChatStage(ChatEntity.CHAT_STAGE_START);
                 }
+                else if (incomingText.equalsIgnoreCase("оператор"))
+                {
+                    String phone;
+                    try
+                    {
+                        phone = incomingText.replaceAll("\\D{11}", "");
+                    }
+                    catch (PatternSyntaxException e)
+                    {
+                        sendMessage.setText("Не верный формат телефона.");
+                        break;
+                    }
+                    if (phonesForOperators.remove(phone))
+                    {
+                        currentUser.setUserRole(roleService.getOperatorRole());
+                        sendMessage.setText("Теперь вы оператор. (Напишите что нибудь)");
+                    }
+                }
                 break;
             }
             case ChatEntity.CHAT_STAGE_START: //ждем ввода валюты которую пользователь хочет поменять
@@ -165,7 +190,7 @@ public class MessageHandlerImpl implements MessageHandler
                 }
                 break;
             }
-            case ChatEntity.CHAT_STAGE_COUNT_TO_GIVE_ENTERED: //Ждем ввода ввалбты которую пользователь хочет получить
+            case ChatEntity.CHAT_STAGE_COUNT_TO_GIVE_ENTERED: //Ждем ввода валюты которую пользователь хочет получить
             {
                 List<CurrencyEntity> allEnabledToGive = currencyService.findAllEnabledToGive();
                 if (!incomingText.isEmpty())
@@ -204,7 +229,19 @@ public class MessageHandlerImpl implements MessageHandler
             }
             case ChatEntity.CHAT_STAGE_ACCOUNT_NUMBER_ENTERED:
             {
-                currentChat.setContactPhone(incomingText.replaceAll("\\D", ""));
+                String phone;
+                try
+                {
+                    phone = incomingText.replaceAll("\\D{11}", "");
+                }
+                catch (PatternSyntaxException e)
+                {
+                    sendMessage.setText("Не верный формат телефона.");
+                    break;
+                }
+
+
+                currentChat.setContactPhone(phone);
                 sendMessage.setText("Спасибо. Мы вам перезвоним.");
                 currentChat.setChatStage(ChatEntity.CHAT_STAGE_PHONE_ENTERED);
                 break;
@@ -273,7 +310,7 @@ public class MessageHandlerImpl implements MessageHandler
                 sendMessage.setText("Не верный номер(только цифры)");
             }
         }
-        else if (incomingText.equals("Admin"))
+        else if (incomingText.equals(adminSecret))
         {
             //Admin mode
             currentChat.setAdminMode(!currentChat.getAdminMode());
@@ -348,7 +385,26 @@ public class MessageHandlerImpl implements MessageHandler
             else if (incomingText.toLowerCase()
                     .startsWith("добавить"))
             {
-                sendMessage.setText("Доделать");
+                String phone;
+                try
+                {
+                    phone = incomingText.replaceAll("\\D{11}", "");
+                    if (phonesForOperators.add(phone))
+                    {
+                        sendMessage.setText("Пользователь, который введет команду \"оператор 'телефон(11 знаков)'\" станет оператором системы и сможет просматривать заявки.");
+                    }
+                    else
+                    {
+                        sendMessage.setText("Такой номер уже есть");
+                    }
+                }
+                catch (PatternSyntaxException e)
+                {
+                    sendMessage.setText("Не верный формат телефона.");
+
+                }
+
+
             }
             else
             {
@@ -539,8 +595,13 @@ public class MessageHandlerImpl implements MessageHandler
     private double calculateCurrencyCountForUser()
     {
         return currentChat.getChatCurrencyToGive()
-                .getCourseInBTC() / currentChat.getChatCurrencyToReceive()
-                .getCourseInBTC() * currentChat.getCurrencyCount() * ((100 - tax) / 100);
+                .getCourseInUSD() / currentChat.getChatCurrencyToReceive()
+                .getCourseInUSD() * currentChat.getCurrencyCount() * ((100 - tax) / 100);
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception
+    {
+        adminSecret = System.getenv("adminSecret");
+    }
 }

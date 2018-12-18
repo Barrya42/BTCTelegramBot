@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import root.entitys.CurrencyEntity;
+import root.DBentitys.CurrencyEntity;
 
 @Repository
 public interface CurrencyRepository extends JpaRepository<CurrencyEntity, Long>

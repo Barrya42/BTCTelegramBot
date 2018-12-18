@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import root.DBentitys.ChatEntity;
+import root.DBentitys.RoleEntity;
 import root.DBservices.ChatService;
-import root.entitys.ChatEntity;
-import root.entitys.RoleEntity;
 import root.repos.ChatRepository;
 
 @Service

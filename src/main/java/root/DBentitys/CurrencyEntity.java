@@ -1,4 +1,4 @@
-package root.entitys;
+package root.DBentitys;
 
 import org.hibernate.annotations.ColumnDefault;
 
@@ -21,8 +21,6 @@ public class CurrencyEntity
     private boolean enabled = true; //принимаем валюту
     @ColumnDefault(value = "true")
     private boolean enabledToGive = true; // отдаем валюту
-    @ColumnDefault(value = "0")
-    private double courseInBTC = 0;
     @ColumnDefault(value = "0")
     private double courseInUSD = 0;
 
@@ -69,16 +67,6 @@ public class CurrencyEntity
     public void setEnabledToGive(boolean enabledToGive)
     {
         this.enabledToGive = enabledToGive;
-    }
-
-    public double getCourseInBTC()
-    {
-        return courseInBTC;
-    }
-
-    public void setCourseInBTC(double courseInBTC)
-    {
-        this.courseInBTC = courseInBTC;
     }
 
     public double getCourseInUSD()

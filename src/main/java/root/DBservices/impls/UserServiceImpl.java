@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import root.DBentitys.RoleEntity;
+import root.DBentitys.UserEntity;
 import root.DBservices.UserService;
-import root.entitys.RoleEntity;
-import root.entitys.UserEntity;
 import root.repos.UserRepository;
 
 @Service

@@ -1,4 +1,4 @@
-package root.entitys;
+package root.DBentitys;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

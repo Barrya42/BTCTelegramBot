@@ -1,6 +1,6 @@
 package root.DBservices;
 
-import root.entitys.RoleEntity;
+import root.DBentitys.RoleEntity;
 
 public interface RoleService
 {

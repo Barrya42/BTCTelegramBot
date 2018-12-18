@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import root.DBentitys.CurrencyEntity;
 import root.DBservices.CurrencyService;
-import root.entitys.CurrencyEntity;
 import root.repos.CurrencyRepository;
 
 @Service

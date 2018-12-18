@@ -3,8 +3,8 @@ package root.DBservices;
 import java.util.List;
 import java.util.Optional;
 
-import root.entitys.RoleEntity;
-import root.entitys.UserEntity;
+import root.DBentitys.RoleEntity;
+import root.DBentitys.UserEntity;
 
 public interface UserService
 {

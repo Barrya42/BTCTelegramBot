@@ -2,7 +2,7 @@ package root.DBservices;
 
 import java.util.List;
 
-import root.entitys.CurrencyEntity;
+import root.DBentitys.CurrencyEntity;
 
 public interface CurrencyService
 {

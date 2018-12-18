@@ -3,8 +3,8 @@ package root.DBservices;
 import java.util.List;
 import java.util.Optional;
 
-import root.entitys.ChatEntity;
-import root.entitys.RoleEntity;
+import root.DBentitys.ChatEntity;
+import root.DBentitys.RoleEntity;
 
 public interface ChatService
 {

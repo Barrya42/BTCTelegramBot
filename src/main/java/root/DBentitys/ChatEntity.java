@@ -1,4 +1,4 @@
-package root.entitys;
+package root.DBentitys;
 
 import org.hibernate.annotations.ColumnDefault;
 

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import root.entitys.RoleEntity;
-import root.entitys.UserEntity;
+import root.DBentitys.RoleEntity;
+import root.DBentitys.UserEntity;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long>

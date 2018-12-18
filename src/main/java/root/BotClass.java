@@ -9,9 +9,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import root.DBentitys.UserEntity;
 import root.DBservices.RoleService;
 import root.DBservices.UserService;
-import root.entitys.UserEntity;
 
 @Service
 public class BotClass extends TelegramLongPollingBot implements InitializingBean
