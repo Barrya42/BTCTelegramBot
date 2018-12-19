@@ -12,7 +12,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 @ComponentScan("root")
 //@ComponentScan("root.Services")
 //@Import(DataConfig.class)
-
 public class BTCTelegramBot
 {
 
