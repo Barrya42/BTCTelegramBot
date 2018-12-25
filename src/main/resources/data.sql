@@ -1,6 +1,4 @@
-INSERT INTO currencies(name) VALUES ('BTC')
-INSERT INTO currencies(name) VALUES ('BTC2')
-INSERT INTO currencies(name) VALUES ('ETH')
-INSERT INTO currencies(name) VALUES ('ETH2')
+INSERT INTO currencies(id,name) VALUES ('bitcoin','BTC')
+INSERT INTO currencies(id,name) VALUES ('etherium','ETH')
 
 --insert into Users (id,user_role_id) values ('455776162',1)

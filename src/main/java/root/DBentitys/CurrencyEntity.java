@@ -3,8 +3,6 @@ package root.DBentitys;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -13,8 +11,7 @@ import javax.persistence.Table;
 public class CurrencyEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
     @ColumnDefault(value = "'empty'")
     private String name;
     @ColumnDefault(value = "true")
@@ -22,19 +19,20 @@ public class CurrencyEntity
     @ColumnDefault(value = "true")
     private boolean enabledToGive = true; // отдаем валюту
     @ColumnDefault(value = "0")
-    private double courseInUSD = 0;
-
+    private double rateUsd = 0;
+    @ColumnDefault(value = "0")
+    private double rateRub = 0;
     public CurrencyEntity()
     {
 
     }
 
-    public long getId()
+    public String getId()
     {
         return id;
     }
 
-    public void setId(long id)
+    public void setId(String id)
     {
         this.id = id;
     }
@@ -69,13 +67,23 @@ public class CurrencyEntity
         this.enabledToGive = enabledToGive;
     }
 
-    public double getCourseInUSD()
+    public double getRateUsd()
     {
-        return courseInUSD;
+        return rateUsd;
     }
 
-    public void setCourseInUSD(double courseInUSD)
+    public void setRateUsd(double rateUsd)
     {
-        this.courseInUSD = courseInUSD;
+        this.rateUsd = rateUsd;
+    }
+
+    public double getRateRub()
+    {
+        return rateRub;
+    }
+
+    public void setRateRub(double rateRub)
+    {
+        this.rateRub = rateRub;
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import root.DBentitys.CurrencyEntity;
 import root.DBservices.CurrencyService;
@@ -12,6 +13,7 @@ import root.repos.CurrencyRepository;
 @Service
 public class CurrencyServiceImpl implements CurrencyService
 {
+
     @Autowired
     CurrencyRepository currencyRepository;
 
@@ -38,5 +40,11 @@ public class CurrencyServiceImpl implements CurrencyService
     public List<CurrencyEntity> findAllEnabledToGive()
     {
         return currencyRepository.findAllByenabledToGive(true);
+    }
+
+    @Override
+    public Optional<CurrencyEntity> findById(String id)
+    {
+        return currencyRepository.findById(id);
     }
 }

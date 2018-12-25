@@ -595,8 +595,8 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
     private double calculateCurrencyCountForUser()
     {
         return currentChat.getChatCurrencyToGive()
-                .getCourseInUSD() / currentChat.getChatCurrencyToReceive()
-                .getCourseInUSD() * currentChat.getCurrencyCount() * ((100 - tax) / 100);
+                .getRateUsd() / currentChat.getChatCurrencyToReceive()
+                .getRateUsd() * currentChat.getCurrencyCount() * ((100 - tax) / 100);
     }
 
     @Override

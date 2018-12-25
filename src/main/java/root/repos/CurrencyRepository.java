@@ -8,7 +8,7 @@ import java.util.List;
 import root.DBentitys.CurrencyEntity;
 
 @Repository
-public interface CurrencyRepository extends JpaRepository<CurrencyEntity, Long>
+public interface CurrencyRepository extends JpaRepository<CurrencyEntity, String>
 {
     List<CurrencyEntity> findAllByenabled(Boolean enabled);
 
