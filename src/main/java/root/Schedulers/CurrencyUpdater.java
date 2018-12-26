@@ -1,11 +1,19 @@
 package root.Schedulers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.util.Collections;
 import java.util.List;
 
 import root.DBentitys.CurrencyEntity;
@@ -21,21 +29,28 @@ public class CurrencyUpdater
     @Scheduled(fixedDelay = 10000)
     private void updateCurrencies()
     {
-        RestTemplate restTemplate = new RestTemplate();
-
+        SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
+        simpleClientHttpRequestFactory.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("167.16.1.250", 8080)));
+        RestTemplate restTemplate = new RestTemplate(simpleClientHttpRequestFactory);
 
 //        restTemplate.getForEntity()
         List<CurrencyEntity> enabledCurrencyEntities = currencyService.findAllEnabled();
 
         for (CurrencyEntity currencyEntity : enabledCurrencyEntities)
         {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+            HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
             String request = "https://api.coincap.io/v2/rates/" + currencyEntity.getId();
-            RateResponseEntity response = restTemplate.getForObject(request, RateResponseEntity.class);
-//            ResponseEntity<String> response = restTemplate.exchange(
-//                    url, HttpMethod.GET, entity, String.class, param);
-            if (response.getData() != null)
+
+            ResponseEntity<RateResponseEntity> response = restTemplate.exchange(request, HttpMethod.GET, entity, RateResponseEntity.class);
+
+            RateResponseEntity RateResponse = response.getBody();
+
+            if (RateResponse.getData() != null)
             {
-                currencyEntity.setRateUsd(Double.parseDouble(response.getData()
+                currencyEntity.setRateUsd(Double.parseDouble(RateResponse.getData()
                         .getRateUsd()));
             }
 
