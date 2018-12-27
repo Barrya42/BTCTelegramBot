@@ -48,7 +48,7 @@ public class CurrencyUpdater
 
             RateResponseEntity RateResponse = response.getBody();
 
-            if (RateResponse.getData() != null)
+            if (RateResponse != null && RateResponse.getData() != null)
             {
                 currencyEntity.setRateUsd(Double.parseDouble(RateResponse.getData()
                         .getRateUsd()));
@@ -57,7 +57,7 @@ public class CurrencyUpdater
             Double i = restTemplate.execute("https://www.cbr-xml-daily.ru/daily_json.js", HttpMethod.GET, null, new UsdRubExtractor());
             if (i != null && i != 0)
             {
-                currencyEntity.setRateRub(currencyEntity.getRateUsd() * i);
+                currencyEntity.setRateRub(i);
             }
         }
 
