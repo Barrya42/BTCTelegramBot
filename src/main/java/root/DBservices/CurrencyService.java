@@ -15,5 +15,7 @@ public interface CurrencyService
 
     public List<CurrencyEntity> findAllEnabledToGive();
 
+    public List<CurrencyEntity> findAllUpdateRate();
+
     public Optional<CurrencyEntity> findById(String id);
 }

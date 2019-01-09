@@ -13,4 +13,6 @@ public interface CurrencyRepository extends JpaRepository<CurrencyEntity, String
     List<CurrencyEntity> findAllByenabled(Boolean enabled);
 
     List<CurrencyEntity> findAllByenabledToGive(Boolean enabled);
+
+    List<CurrencyEntity> findAllByupdateRate(Boolean enabled);
 }

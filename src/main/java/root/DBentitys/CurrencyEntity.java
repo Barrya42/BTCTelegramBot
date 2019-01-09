@@ -18,6 +18,8 @@ public class CurrencyEntity
     private boolean enabled = true; //принимаем валюту
     @ColumnDefault(value = "true")
     private boolean enabledToGive = true; // отдаем валюту
+    @ColumnDefault(value = "true")
+    private boolean updateRate = true; // обновляем курс
     @ColumnDefault(value = "0")
     private double rateUsd = 0;
     @ColumnDefault(value = "0")

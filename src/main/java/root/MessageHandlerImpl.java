@@ -484,7 +484,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
             }
             case ChatEntity.CHAT_STAGE_START: // предлагаем кнопки для выбора валюты, которую мы принимаем
             {
-                List<CurrencyEntity> enabledCurrencies = currencyService.findAllEnabled();
+                List<CurrencyEntity> enabledCurrencies = currencyService.findAllEnabledToGive();
                 int rowSize = 3;
                 if (enabledCurrencies.size() > 0)
                 {

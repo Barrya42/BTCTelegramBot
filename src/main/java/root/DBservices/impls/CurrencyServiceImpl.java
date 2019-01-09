@@ -43,6 +43,12 @@ public class CurrencyServiceImpl implements CurrencyService
     }
 
     @Override
+    public List<CurrencyEntity> findAllUpdateRate()
+    {
+        return currencyRepository.findAllByupdateRate(true);
+    }
+
+    @Override
     public Optional<CurrencyEntity> findById(String id)
     {
         return currencyRepository.findById(id);
