@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,8 @@ public class CurrencyUpdater
         {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setAcceptCharset(Collections.singletonList(Charset.defaultCharset()));
 
             HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
             String request = "https://api.coincap.io/v2/rates/" + currencyEntity.getId();
