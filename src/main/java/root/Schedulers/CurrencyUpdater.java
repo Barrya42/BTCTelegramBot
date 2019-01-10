@@ -11,6 +11,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
@@ -30,8 +32,7 @@ public class CurrencyUpdater
     private void updateCurrencies()
     {
         SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
-//        simpleClientHttpRequestFactory.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("167.16.1.250", 8080)));
-        //RestTemplate restTemplate = new RestTemplate(simpleClientHttpRequestFactory);
+        simpleClientHttpRequestFactory.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("167.16.1.250", 8080)));
         RestTemplate restTemplate = new RestTemplate(simpleClientHttpRequestFactory);
 
 //        restTemplate.getForEntity()
@@ -69,9 +70,9 @@ public class CurrencyUpdater
                 .findFirst();
 
         currencyEntityRUB.ifPresent(currencyEntity1 -> enabledCurrencyEntities.stream()
-                .filter(currencyEntity -> !currencyEntity.getId()
-                        .equals(currencyEntity1
-                                .getId()))
+//                .filter(currencyEntity -> !currencyEntity.getId()
+//                        .equals(currencyEntity1
+//                                .getId()))
                 .forEach(currencyEntity ->
                         currencyEntity.setRateRub(currencyEntity.getRateUsd() * 1 / currencyEntity1
                                 .getRateUsd())));
