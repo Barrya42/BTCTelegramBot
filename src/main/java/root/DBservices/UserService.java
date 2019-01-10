@@ -10,7 +10,7 @@ public interface UserService
 {
     public Optional<UserEntity> findUserById(long id);
 
-    public UserEntity addUser(UserEntity userEntity);
+    public UserEntity saveUser(UserEntity userEntity);
 
     public UserEntity blockUser(UserEntity userEntity);
 

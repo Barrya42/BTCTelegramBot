@@ -31,7 +31,7 @@ public class ChatServiceImpl implements ChatService
     }
 
     @Override
-    public ChatEntity addChat(ChatEntity chatEntity)
+    public ChatEntity saveChat(ChatEntity chatEntity)
     {
         return chatRepository.save(chatEntity);
     }

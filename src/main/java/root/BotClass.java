@@ -65,6 +65,6 @@ public class BotClass extends TelegramLongPollingBot implements InitializingBean
 //        UserEntity newUser = new UserEntity();
 //        newUser.setId(455776162);
 //        newUser.setUserRole(roleService.getOperatorRole());
-//        userService.addUser(newUser);
+//        userService.saveUser(newUser);
     }
 }

@@ -12,7 +12,7 @@ public interface ChatService
 
     public void deleteChat(ChatEntity chatEntity);
 
-    public ChatEntity addChat(ChatEntity chatEntity);
+    public ChatEntity saveChat(ChatEntity chatEntity);
 
     public List<ChatEntity> findAll();
 

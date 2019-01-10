@@ -102,7 +102,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
             newUserEntity.setName(user.getUserName());
             newUserEntity.setBlocked(false);
             newUserEntity.setUserRole(roleService.getUserRole());
-            return userService.addUser(newUserEntity);
+            return userService.saveUser(newUserEntity);
         });
     }
 
@@ -115,7 +115,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
             newChatEntity.setChatStage(ChatEntity.CHAT_STAGE_NONE);
             newChatEntity.setId(chat.getId());
             newChatEntity.setUserEntity(currentUser);
-            return chatService.addChat(newChatEntity);
+            return chatService.saveChat(newChatEntity);
         });
 
     }
@@ -261,6 +261,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
                 sendMessage.setText("Что бы начать нажмите Старт");
                 break;
             }
+            //chatService.saveChat(currentChat);
         }
     }
 
