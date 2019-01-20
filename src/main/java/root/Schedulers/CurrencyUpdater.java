@@ -11,8 +11,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +30,7 @@ public class CurrencyUpdater
     private void updateCurrencies()
     {
         SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
-        simpleClientHttpRequestFactory.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("167.16.1.250", 8080)));
+        //simpleClientHttpRequestFactory.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("167.16.1.250", 8080)));
         RestTemplate restTemplate = new RestTemplate(simpleClientHttpRequestFactory);
 
 //        restTemplate.getForEntity()

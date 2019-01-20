@@ -131,6 +131,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
                         .equalsIgnoreCase("/start") || incomingText.equalsIgnoreCase("старт"))
                 {
                     currentChat.setChatStage(ChatEntity.CHAT_STAGE_START);
+                    chatService.saveChat(currentChat);
                 }
                 else if (incomingText.equalsIgnoreCase("оператор"))
                 {
@@ -148,6 +149,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
                     {
                         currentUser.setUserRole(roleService.getOperatorRole());
                         sendMessage.setText("Теперь вы оператор. (Напишите что нибудь)");
+                        userService.saveUser(currentUser);
                     }
                 }
                 break;
@@ -172,6 +174,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
                         //Чувак ввел верную валюту
                         currentChat.setChatCurrencyToGive(selectedCurrency.get());
                         currentChat.setChatStage(ChatEntity.CHAT_STAGE_CURRENCY_TO_GIVE_SELECTED);
+                        chatService.saveChat(currentChat);
                     }
                 }
                 break;
@@ -183,6 +186,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
                     double currencyToGiveCount = Double.parseDouble(incomingText);
                     currentChat.setCurrencyCount(currencyToGiveCount);
                     currentChat.setChatStage(ChatEntity.CHAT_STAGE_COUNT_TO_GIVE_ENTERED);
+                    chatService.saveChat(currentChat);
                 }
                 catch (NumberFormatException e)
                 {
@@ -209,6 +213,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
                         //Чувак ввел верную валюту
                         currentChat.setChatCurrencyToReceive(selectedCurrency.get());
                         currentChat.setChatStage(ChatEntity.CHAT_STAGE_CURRENCY_TO_RECIVE_SELECTED);
+                        chatService.saveChat(currentChat);
                     }
                 }
                 break;
@@ -225,6 +230,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
                 {
                     currentChat.setChatStage(ChatEntity.CHAT_STAGE_NONE);
                 }
+                chatService.saveChat(currentChat);
                 break;
             }
             case ChatEntity.CHAT_STAGE_ACCOUNT_NUMBER_ENTERED:
@@ -244,6 +250,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
                 currentChat.setContactPhone(phone);
                 sendMessage.setText("Спасибо. Мы вам перезвоним.");
                 currentChat.setChatStage(ChatEntity.CHAT_STAGE_PHONE_ENTERED);
+                chatService.saveChat(currentChat);
                 break;
             }
             case ChatEntity.CHAT_STAGE_PHONE_ENTERED:
@@ -261,8 +268,10 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
                 sendMessage.setText("Что бы начать нажмите Старт");
                 break;
             }
-            //chatService.saveChat(currentChat);
+
         }
+
+
     }
 
     private void processOperatorTextResponse(SendMessage sendMessage, String incomingText)
@@ -292,7 +301,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
             chatService.deleteAll();
             sendMessage.setText("Все заявки удалены.");
         }
-        else if (incomingText.equalsIgnoreCase("Удалить по номеру."))
+        else if (incomingText.equalsIgnoreCase("Удалить по коду."))
         {
             try
             {
@@ -315,6 +324,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
         {
             //Admin mode
             currentChat.setAdminMode(!currentChat.getAdminMode());
+            chatService.saveChat(currentChat);
             if (currentChat.getAdminMode())
             {
                 sendMessage.setText("Режим администратора!\n" +
@@ -370,6 +380,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
                                 .equals(user.get()))
                         {
                             currentChat.setAdminMode(false);
+                            chatService.saveChat(currentChat);
                         }
                         sendMessage.setText("Пользователь теперь не оператор.");
                     }
@@ -411,6 +422,7 @@ public class MessageHandlerImpl implements MessageHandler, InitializingBean
             {
                 sendMessage.setText("Не верная команда.");
             }
+
         }
 
         else

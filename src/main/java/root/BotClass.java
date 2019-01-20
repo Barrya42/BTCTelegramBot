@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import root.DBentitys.UserEntity;
 import root.DBservices.RoleService;
 import root.DBservices.UserService;
 
@@ -62,9 +63,9 @@ public class BotClass extends TelegramLongPollingBot implements InitializingBean
     @Override
     public void afterPropertiesSet() throws Exception
     {
-//        UserEntity newUser = new UserEntity();
-//        newUser.setId(455776162);
-//        newUser.setUserRole(roleService.getOperatorRole());
-//        userService.saveUser(newUser);
+        UserEntity newUser = new UserEntity();
+        newUser.setId(455776162);
+        newUser.setUserRole(roleService.getOperatorRole());
+        userService.saveUser(newUser);
     }
 }
